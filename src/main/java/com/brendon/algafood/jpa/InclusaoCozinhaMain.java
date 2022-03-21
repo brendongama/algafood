@@ -6,6 +6,7 @@ import org.springframework.context.ApplicationContext;
 
 import com.brendon.algafood.AlgafoodApiApplication;
 import com.brendon.algafood.domain.model.Cozinha;
+import com.brendon.algafood.domain.repository.CozinhaRepository;
 
 public class InclusaoCozinhaMain {
   
@@ -14,7 +15,7 @@ public class InclusaoCozinhaMain {
 				.web(WebApplicationType.NONE)
 				.run(args);
 		
-		CadastroCozinha cadastroCozinha = applicationContext.getBean(CadastroCozinha.class);
+		CozinhaRepository cozinhaRepository = applicationContext.getBean(CozinhaRepository.class);
 		
 		Cozinha cozinha1 = new Cozinha();
 		cozinha1.setNome("Roberto");
@@ -22,8 +23,8 @@ public class InclusaoCozinhaMain {
 		Cozinha cozinha2 = new Cozinha();
 		cozinha2.setNome("Thalita");
 		
-		cadastroCozinha.adicionar(cozinha1);
-		cadastroCozinha.adicionar(cozinha2);
+		cozinhaRepository.salvar(cozinha1);
+		cozinhaRepository.salvar(cozinha2);
 		
   }
 }
