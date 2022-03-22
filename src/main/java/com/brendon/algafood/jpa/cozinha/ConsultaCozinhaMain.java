@@ -1,4 +1,4 @@
-package com.brendon.algafood.jpa;
+package com.brendon.algafood.jpa.cozinha;
 
 import java.util.List;
 

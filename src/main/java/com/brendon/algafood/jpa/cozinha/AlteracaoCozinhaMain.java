@@ -1,4 +1,4 @@
-package com.brendon.algafood.jpa;
+package com.brendon.algafood.jpa.cozinha;
 
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.builder.SpringApplicationBuilder;
@@ -8,7 +8,7 @@ import com.brendon.algafood.AlgafoodApiApplication;
 import com.brendon.algafood.domain.model.Cozinha;
 import com.brendon.algafood.domain.repository.CozinhaRepository;
 
-public class InclusaoCozinhaMain {
+public class AlteracaoCozinhaMain {
   
 	public static void main(String[] args) {
 		ApplicationContext applicationContext = new SpringApplicationBuilder(AlgafoodApiApplication.class)
@@ -17,14 +17,10 @@ public class InclusaoCozinhaMain {
 		
 		CozinhaRepository cozinhaRepository = applicationContext.getBean(CozinhaRepository.class);
 		
-		Cozinha cozinha1 = new Cozinha();
-		cozinha1.setNome("Roberto");
+		Cozinha cozinha = new Cozinha();
+		cozinha.setId(1L);
+		cozinha.setNome("lUCAS");
 		
-		Cozinha cozinha2 = new Cozinha();
-		cozinha2.setNome("Thalita");
-		
-		cozinhaRepository.salvar(cozinha1);
-		cozinhaRepository.salvar(cozinha2);
-		
+		cozinhaRepository.salvar(cozinha);
   }
 }
