@@ -6,9 +6,12 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 
+import org.springframework.stereotype.Component;
+
 import com.brendon.algafood.domain.model.Estado;
 import com.brendon.algafood.domain.repository.EstadoRepository;
 
+@Component
 public class EstadoRepositoryImpl implements EstadoRepository{
 
 	@PersistenceContext

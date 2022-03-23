@@ -6,9 +6,12 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 
+import org.springframework.stereotype.Component;
+
 import com.brendon.algafood.domain.model.Permissao;
 import com.brendon.algafood.domain.repository.PermissaoRepository;
 
+@Component
 public class PermissaoRepositoryImpl implements PermissaoRepository{
 
 	@PersistenceContext

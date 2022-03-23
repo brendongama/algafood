@@ -6,9 +6,12 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 
+import org.springframework.stereotype.Component;
+
 import com.brendon.algafood.domain.model.FormaPagamento;
 import com.brendon.algafood.domain.repository.FormaPagamentoRepository;
 
+@Component
 public class FormaPagamentoRepositoryImpl implements FormaPagamentoRepository{
 
 	@PersistenceContext
