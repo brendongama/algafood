@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.brendon.algafood.api.model.CozinhasXmlWrapper;
 import com.brendon.algafood.domain.exception.EntidadeEmUsoException;
 import com.brendon.algafood.domain.exception.EntidadeNaoEncontradaException;
 import com.brendon.algafood.domain.model.Cozinha;
