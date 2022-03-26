@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.brendon.algafood.api.model.CozinhasXmlWrapper;
 import com.brendon.algafood.domain.model.Cozinha;
 import com.brendon.algafood.domain.repository.CozinhaRepository;
+import com.brendon.algafood.domain.service.CadastroCozinhaService;
 
 @RestController
 @RequestMapping("/cozinhas")
@@ -28,6 +29,9 @@ public class CozinhaController {
 
 	@Autowired
 	private CozinhaRepository cozinhaRepository;
+	
+	@Autowired
+	private CadastroCozinhaService cozinhaService;
 	
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public List<Cozinha> listar() {
@@ -52,7 +56,7 @@ public class CozinhaController {
 	@PostMapping
 	@ResponseStatus(code = HttpStatus.CREATED)
 	public Cozinha salvar(@RequestBody Cozinha cozinha) {		
-		return  cozinhaRepository.salvar(cozinha);				
+		return  cozinhaService.salvar(cozinha);				
 	}
 	
 	@PutMapping("{cozinhaId}")
