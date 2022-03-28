@@ -46,5 +46,11 @@ public class RestauranteService {
 					String.format("Não existe um cadastro de restaurante com código %d", restauranteId));
 		}
 	}
+	
+	public Restaurante alterar(Long id, Restaurante restaurante) {
+		restaurante.setId(id);
+		Restaurante restauranteAtualizado = restaurante;		
+		return this.salvar(restauranteAtualizado);
+	}
 
 }
