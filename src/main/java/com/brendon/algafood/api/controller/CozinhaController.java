@@ -21,7 +21,7 @@ import com.brendon.algafood.domain.exception.EntidadeEmUsoException;
 import com.brendon.algafood.domain.exception.EntidadeNaoEncontradaException;
 import com.brendon.algafood.domain.model.Cozinha;
 import com.brendon.algafood.domain.repository.CozinhaRepository;
-import com.brendon.algafood.domain.service.CadastroCozinhaService;
+import com.brendon.algafood.domain.service.CozinhaService;
 
 @RestController
 @RequestMapping("/cozinhas")
@@ -31,7 +31,7 @@ public class CozinhaController {
 	private CozinhaRepository cozinhaRepository;
 	
 	@Autowired
-	private CadastroCozinhaService cozinhaService;
+	private CozinhaService cozinhaService;
 	
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public List<Cozinha> listar() {

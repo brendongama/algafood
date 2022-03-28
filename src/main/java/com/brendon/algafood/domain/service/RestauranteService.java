@@ -7,7 +7,9 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.brendon.algafood.domain.exception.EntidadeNaoEncontradaException;
+import com.brendon.algafood.domain.model.Cozinha;
 import com.brendon.algafood.domain.model.Restaurante;
+import com.brendon.algafood.domain.repository.CozinhaRepository;
 import com.brendon.algafood.domain.repository.RestauranteRepository;
 
 @Service
@@ -15,6 +17,22 @@ public class RestauranteService {
 
 	@Autowired
 	private RestauranteRepository restauranteRepository;
+	
+	@Autowired
+	private CozinhaRepository cozinhaRepository;
+	
+	public Restaurante salvar(Restaurante restaurante) {
+		Long cozinhaId = restaurante.getCozinha().getId();
+		Cozinha cozinha = cozinhaRepository.buscar(cozinhaId);
+		if(cozinha == null) {
+			throw new EntidadeNaoEncontradaException(
+					String.format("Não existe cadastro de cozinha com o código %d", cozinhaId));
+		}
+		
+		restaurante.setCozinha(cozinha);
+		
+		return restauranteRepository.salvar(restaurante);
+	}
 
 	public List<Restaurante> listar() {
 		return restauranteRepository.listar();
