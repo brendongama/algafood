@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.brendon.algafood.domain.exception.EntidadeEmUsoException;
@@ -12,15 +13,14 @@ import com.brendon.algafood.domain.model.Estado;
 import com.brendon.algafood.domain.repository.EstadoRepository;
 
 @Service
-public class EstadoService implements EstadoRepository {
+public class EstadoService {
 	
 	@Autowired
 	private EstadoRepository estadoRepository;
 
-	@Override
+
 	public List<Estado> listar() {
-		List<Estado> estadoLista = estadoRepository.listar();
-		
+		List<Estado> estadoLista = estadoRepository.listar();		
 		if(estadoLista.isEmpty()) {
 			throw new EntidadeNaoEncontradaException(
 					String.format("Não existe um ou mais estados cadastrados"));
@@ -28,7 +28,7 @@ public class EstadoService implements EstadoRepository {
 		return estadoLista;
 	}
 
-	@Override
+
 	public Estado buscar(Long id) {
 		Estado estado = estadoRepository.buscar(id);
 		if(estado == null) {
@@ -38,18 +38,21 @@ public class EstadoService implements EstadoRepository {
 		return estado;
 	}
 
-	@Override
+
 	public Estado salvar(Estado estado) {
 		return estadoRepository.salvar(estado);
 	}
 
-	@Override
+
 	public void remover(Long id) {			
 		try {
 			estadoRepository.remover(id);
 		} catch (DataIntegrityViolationException e) {
 			throw new EntidadeEmUsoException(
 					String.format("Estado de código %d não pode ser removida, pois esta em uso", id));
+		} catch (EmptyResultDataAccessException e) {
+                throw new EntidadeNaoEncontradaException(
+                    String.format("Não existe um cadastro de estado com código %d", id));
 		}
 		
 	}

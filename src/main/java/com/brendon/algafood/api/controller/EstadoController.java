@@ -51,7 +51,7 @@ public class EstadoController {
 		try {
 			Estado estadoNovo = estadoService.salvar(estado);
 			return ResponseEntity.status(HttpStatus.CREATED).body(estadoNovo);
-		} catch (Exception e) {
+		} catch (EntidadeNaoEncontradaException e) {
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
 	}
