@@ -53,6 +53,8 @@ public class EstadoController {
 			return ResponseEntity.status(HttpStatus.CREATED).body(estadoNovo);
 		} catch (EntidadeNaoEncontradaException e) {
 			return ResponseEntity.badRequest().body(e.getMessage());
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
 		}
 	}
 	

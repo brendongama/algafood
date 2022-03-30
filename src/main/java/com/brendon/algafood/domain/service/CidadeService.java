@@ -7,13 +7,18 @@ import org.springframework.stereotype.Service;
 
 import com.brendon.algafood.domain.exception.EntidadeNaoEncontradaException;
 import com.brendon.algafood.domain.model.Cidade;
+import com.brendon.algafood.domain.model.Estado;
 import com.brendon.algafood.domain.repository.CidadeRepository;
+import com.brendon.algafood.domain.repository.EstadoRepository;
 
 @Service
 public class CidadeService {
 	
 	@Autowired
 	private CidadeRepository cidadeRepository;
+	
+	@Autowired
+	private EstadoRepository estadoRepository;
 
 	
 	public List<Cidade> listar() {
@@ -27,21 +32,44 @@ public class CidadeService {
 
 	
 	public Cidade buscar(Long id) {
-		// TODO Auto-generated method stub
-		return null;
+		Cidade cidade = cidadeRepository.buscar(id);
+		if(cidade == null) {
+			throw new EntidadeNaoEncontradaException(
+					String.format("Não existe uma cidade cadastrada com o id %d", id));
+		}		
+		return cidade;
 	}
 
 	
 	public Cidade salvar(Cidade cidade) {
-		// TODO Auto-generated method stub
-		return null;
+		Long estadoId = cidade.getEstado().getId();
+		
+		Estado estado = estadoRepository.buscar(estadoId);
+		if(estado == null) {
+			throw new EntidadeNaoEncontradaException(
+					String.format("Não existe um estado cadastrado com o id %d", estadoId));
+		}		
+		return cidadeRepository.salvar(cidade);
 	}
 
 	
-	public void remover(Cidade cidade) {
-		// TODO Auto-generated method stub
-		
+	public void remover(Long id) {
+		Cidade cidade = cidadeRepository.buscar(id);
+		if(cidade == null) {
+			throw new EntidadeNaoEncontradaException(
+					String.format("Não existe uma cidade cadastrada com o id %d", id));
+		}			
+		cidadeRepository.remover(id);		
 	}
 	
+	public Cidade atualizar(Long id, Cidade cidade) {
+		Cidade cidadeAntiga = cidadeRepository.buscar(id);
+		if(cidadeAntiga == null) {
+			throw new EntidadeNaoEncontradaException(
+					String.format("Não existe uma cidade cadastrada com o id %d", id));
+		}		
+		cidade.setId(id);
+		return cidadeRepository.salvar(cidade);		
+	}
 
 }
