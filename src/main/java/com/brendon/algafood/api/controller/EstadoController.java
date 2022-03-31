@@ -77,14 +77,11 @@ public class EstadoController {
 	@PutMapping("/{id}")
 	public ResponseEntity<?> alterar(@PathVariable Long id, @RequestBody Estado estado) {
 		try {
-			Estado estadoAntigo = estadoService.buscar(id);
-			if(estadoAntigo != null) {
-				Estado estadoalterado = estadoService.alterar(id, estado);
-				return ResponseEntity.ok().body(estadoalterado);
-			}
-			return ResponseEntity.notFound().build();
+			estadoService.buscar(id);
+			Estado estadoalterado = estadoService.alterar(id, estado);
+			return ResponseEntity.ok().body(estadoalterado);			
 		} catch (EntidadeNaoEncontradaException e) {
-			return ResponseEntity.badRequest().body(e.getMessage());
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
 		} catch (EntidadeEmUsoException e) {
 			return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
 		} 
