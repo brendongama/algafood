@@ -3,8 +3,11 @@ package com.brendon.algafood.domain.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
+import com.brendon.algafood.domain.exception.EntidadeEmUsoException;
 import com.brendon.algafood.domain.exception.EntidadeNaoEncontradaException;
 import com.brendon.algafood.domain.model.Cidade;
 import com.brendon.algafood.domain.model.Estado;
@@ -22,7 +25,7 @@ public class CidadeService {
 
 	
 	public List<Cidade> listar() {
-		List<Cidade> listaCidade =  cidadeRepository.listar();
+		List<Cidade> listaCidade =  cidadeRepository.findAll();
 		if(listaCidade.isEmpty()) {
 			throw new EntidadeNaoEncontradaException(
 					String.format("Não existe um ou mais cidades cadastradas"));
@@ -32,11 +35,9 @@ public class CidadeService {
 
 	
 	public Cidade buscar(Long id) {
-		Cidade cidade = cidadeRepository.buscar(id);
-		if(cidade == null) {
-			throw new EntidadeNaoEncontradaException(
-					String.format("Não existe uma cidade cadastrada com o id %d", id));
-		}		
+		Cidade cidade = cidadeRepository.findById(id)
+				.orElseThrow(() -> new EntidadeNaoEncontradaException(
+						String.format("Não existe uma cidade cadastrada com o id %d", id)));	
 		return cidade;
 	}
 
@@ -48,28 +49,30 @@ public class CidadeService {
 		if(estado == null) {
 			throw new EntidadeNaoEncontradaException(
 					String.format("Não existe um estado cadastrado com o id %d", estadoId));
-		}		
-		return cidadeRepository.salvar(cidade);
+		}	
+		cidade.setEstado(estado);
+		return cidadeRepository.save(cidade);
 	}
 
 	
-	public void remover(Long id) {
-		Cidade cidade = cidadeRepository.buscar(id);
-		if(cidade == null) {
+	public void remover(Long id) {		
+		try {
+			cidadeRepository.deleteById(id);
+		}catch (EmptyResultDataAccessException e) {
 			throw new EntidadeNaoEncontradaException(
-					String.format("Não existe uma cidade cadastrada com o id %d", id));
-		}			
-		cidadeRepository.remover(id);		
+					String.format("Não existe um cadastro de cozinha com código %d", id));
+		} catch (DataIntegrityViolationException e) {
+			throw new EntidadeEmUsoException(
+					String.format("Cozinha de código %d não pode ser removida, pois esta em uso", id));
+		}		
 	}
 	
 	public Cidade atualizar(Long id, Cidade cidade) {
-		Cidade cidadeAntiga = cidadeRepository.buscar(id);
-		if(cidadeAntiga == null) {
-			throw new EntidadeNaoEncontradaException(
-					String.format("Não existe uma cidade cadastrada com o id %d", id));
-		}		
+			cidadeRepository.findById(id)
+				.orElseThrow(() -> new EntidadeNaoEncontradaException(
+					String.format("Não existe uma cidade cadastrada com o id %d", id)));		
 		cidade.setId(id);
-		return cidadeRepository.salvar(cidade);		
+		return cidadeRepository.save(cidade);		
 	}
 
 }
