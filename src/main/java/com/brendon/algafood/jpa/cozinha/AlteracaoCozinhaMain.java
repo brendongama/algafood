@@ -21,6 +21,6 @@ public class AlteracaoCozinhaMain {
 		cozinha.setId(1L);
 		cozinha.setNome("lUCAS");
 		
-		cozinhaRepository.salvar(cozinha);
+		cozinhaRepository.save(cozinha);
   }
 }

@@ -1,6 +1,7 @@
 package com.brendon.algafood.api.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,14 +36,14 @@ public class CozinhaController {
 	
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public List<Cozinha> listar() {
-		return cozinhaRepository.listar();
+		return cozinhaRepository.findAll();
 	}
 
 	@GetMapping("/{cozinhaId}")
 	public ResponseEntity<Cozinha> buscar(@PathVariable Long cozinhaId) {
-		Cozinha cozinha =  cozinhaRepository.buscar(cozinhaId);		
-		if(cozinha != null) {
-			return ResponseEntity.ok(cozinha);
+		Optional<Cozinha> cozinha =  cozinhaRepository.findById(cozinhaId);		
+		if(cozinha.isPresent()) {
+			return ResponseEntity.ok(cozinha.get());
 		}		
 		//return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 		return ResponseEntity.notFound().build();
@@ -56,24 +57,24 @@ public class CozinhaController {
 	
 	@PutMapping("{cozinhaId}")
 	public ResponseEntity<Cozinha> atualizar(@PathVariable Long cozinhaId, @RequestBody Cozinha cozinha){
-		Cozinha cozinhaAtual = cozinhaRepository.buscar(cozinhaId);
-		if(cozinhaAtual != null) {
-			BeanUtils.copyProperties(cozinha, cozinhaAtual, "id");			
-			cozinhaService.salvar(cozinhaAtual);
-			return ResponseEntity.ok().body(cozinhaAtual);
+		Optional<Cozinha> cozinhaAtual = cozinhaRepository.findById(cozinhaId);
+		if(cozinhaAtual.isPresent()) {
+			BeanUtils.copyProperties(cozinha, cozinhaAtual.get(), "id");			
+			cozinhaService.salvar(cozinhaAtual.get());
+			return ResponseEntity.ok().body(cozinhaAtual.get());
 		}
 		return ResponseEntity.notFound().build();		
 	}
 	
 	@DeleteMapping("{cozinhaId}")
-	public ResponseEntity<Cozinha> deletar(@PathVariable Long cozinhaId){
+	public ResponseEntity<?> deletar(@PathVariable Long cozinhaId){
 		try {			
 			cozinhaService.excluir(cozinhaId);
 			return ResponseEntity.noContent().build();
 		}catch(EntidadeNaoEncontradaException e) {
 			return ResponseEntity.notFound().build();
 		}catch (EntidadeEmUsoException e) {
-			return ResponseEntity.status(HttpStatus.CONFLICT).build();
+			return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
 		}		
 	}
 }

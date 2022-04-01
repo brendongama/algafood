@@ -23,8 +23,8 @@ public class InclusaoCozinhaMain {
 		Cozinha cozinha2 = new Cozinha();
 		cozinha2.setNome("Thalita");
 		
-		cozinhaRepository.salvar(cozinha1);
-		cozinhaRepository.salvar(cozinha2);
+		cozinhaRepository.save(cozinha1);
+		cozinhaRepository.save(cozinha2);
 		
   }
 }
