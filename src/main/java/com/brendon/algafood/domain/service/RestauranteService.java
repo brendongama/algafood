@@ -27,10 +27,8 @@ public class RestauranteService {
 		if(cozinha == null) {
 			throw new EntidadeNaoEncontradaException(
 					String.format("Não existe cadastro de cozinha com o código %d", cozinhaId));
-		}
-		
-		restaurante.setCozinha(cozinha);
-		
+		}		
+		restaurante.setCozinha(cozinha);		
 		return restauranteRepository.salvar(restaurante);
 	}
 
