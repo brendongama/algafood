@@ -43,8 +43,7 @@ public class CidadeService {
 
 	
 	public Cidade salvar(Cidade cidade) {
-		Long estadoId = cidade.getEstado().getId();
-		
+		Long estadoId = cidade.getEstado().getId();		
 		Estado estado = estadoRepository.buscar(estadoId);
 		if(estado == null) {
 			throw new EntidadeNaoEncontradaException(
