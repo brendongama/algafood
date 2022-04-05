@@ -1,6 +1,7 @@
 package com.brendon.algafood.domain.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -27,16 +28,16 @@ public class RestauranteService {
 				.orElseThrow(() -> new EntidadeNaoEncontradaException(
 				String.format("Não existe cadastro de cozinha com o código %d", cozinhaId)));			
 		restaurante.setCozinha(cozinha);		
-		return restauranteRepository.salvar(restaurante);
+		return restauranteRepository.save(restaurante);
 	}
 
 	public List<Restaurante> listar() {
-		return restauranteRepository.listar();
+		return restauranteRepository.findAll();
 	}
 
-	public Restaurante buscar(Long restauranteId) {
+	public Optional<Restaurante> buscar(Long restauranteId) {
 		try {
-			return restauranteRepository.buscar(restauranteId);
+			return restauranteRepository.findById(restauranteId);
 		} catch (EmptyResultDataAccessException e) {
 			throw new EntidadeNaoEncontradaException(
 					String.format("Não existe um cadastro de restaurante com código %d", restauranteId));

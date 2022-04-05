@@ -1,6 +1,7 @@
 package com.brendon.algafood.api.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -36,9 +37,9 @@ public class RestauranteController {
 	
 	@GetMapping("/{restauranteId}")
 	public ResponseEntity<Restaurante> buscar(@PathVariable Long restauranteId) {		
-		Restaurante restaurante = restauranteService.buscar(restauranteId);		
-		if(restaurante != null) {
-			return ResponseEntity.ok(restaurante);			
+		Optional<Restaurante> restaurante = restauranteService.buscar(restauranteId);		
+		if(restaurante.isPresent()) {
+			return ResponseEntity.ok(restaurante.get());			
 		}		
 		return ResponseEntity.notFound().build();
 	}
@@ -57,8 +58,8 @@ public class RestauranteController {
 	@PutMapping("/{restauranteId}")
 	public ResponseEntity<?> alterar(@PathVariable Long restauranteId, @RequestBody Restaurante restaurante) {
 		try {
-			Restaurante restauranteBuscar = restauranteService.buscar(restauranteId);
-			if(restauranteBuscar != null) {
+			Optional<Restaurante> restauranteBuscar = restauranteService.buscar(restauranteId);
+			if(restauranteBuscar.isPresent()) {
 				restaurante = restauranteService.alterar(restauranteId, restaurante); 
 				return ResponseEntity.ok(restaurante);
 			}
