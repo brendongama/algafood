@@ -26,6 +26,6 @@ public class TesteController {
 	
 	@GetMapping("/restaurante/por-nome")
 	public List<Restaurante> restaurantesPorNome(String nome, Long cozinhaId){
-		return restauranteRepository.findByNomeContainingAndCozinhaId(nome, cozinhaId);
+		return restauranteRepository.consultarPorNome(nome, cozinhaId);
 	}
 }
