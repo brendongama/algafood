@@ -1,6 +1,7 @@
 package com.brendon.algafood.infrastructure.repository;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -11,6 +12,7 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 import org.springframework.stereotype.Repository;
+import org.springframework.util.StringUtils;
 
 import com.brendon.algafood.domain.model.Restaurante;
 
@@ -28,13 +30,21 @@ public class RestauranteRepositoryImpl {
 	
 		Root<Restaurante> root = criteria.from(Restaurante.class);
 		
-		Predicate nomePredicate = builder.like(root.get("nome"),"%" +  nome + "%");
+		var predicates = new ArrayList<Predicate>();
 		
-		Predicate taxaInicialPredicate = builder.greaterThanOrEqualTo(root.get("taxaFrete"), taxaFreteFinal);
+		if(StringUtils.hasText(nome)){
+			predicates.add(builder.like(root.get("nome"),"%" +  nome + "%"));
+		}
 		
-		Predicate taxaFinalPredicate = builder.lessThanOrEqualTo(root.get("taxaFrete"), taxaFreteFinal);
+		if(taxaFreteInicial != null) {
+			predicates.add(builder.greaterThanOrEqualTo(root.get("taxaFrete"), taxaFreteFinal));
+		}
 		
-		criteria.where(nomePredicate, taxaInicialPredicate, taxaFinalPredicate);
+		if(taxaFreteFinal != null ) {
+			predicates.add(builder.lessThanOrEqualTo(root.get("taxaFrete"), taxaFreteFinal));
+		}		
+		
+		criteria.where(predicates.toArray(new Predicate[0]));
 		
 		return manager.createQuery(criteria).getResultList();
 	}
