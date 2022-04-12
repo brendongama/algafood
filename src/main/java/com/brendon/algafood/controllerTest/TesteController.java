@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.brendon.algafood.domain.model.Restaurante;
 import com.brendon.algafood.domain.repository.RestauranteRepository;
+import com.brendon.algafood.infrastructure.repository.spec.RestauranteComFreteGratisEpec;
+import com.brendon.algafood.infrastructure.repository.spec.RestauranteComNomeSemelhanteSpec;
 
 @RestController
 @RequestMapping("/teste")
@@ -27,6 +29,14 @@ public class TesteController {
 	@GetMapping("/restaurante/por-nome")
 	public List<Restaurante> restaurantesPorNome(String nome, Long cozinhaId){
 		return restauranteRepository.consultarPorNome(nome, cozinhaId);
+	}
+	
+	@GetMapping("/restaurante/com-frete-gratis")
+	public List<Restaurante> restaurantesComFreteGratis(String nome){
+		
+		var comFreteGratis = new RestauranteComFreteGratisEpec(); 
+		var comNomeSemelhante = new RestauranteComNomeSemelhanteSpec(nome);
+		return restauranteRepository.findAll(comFreteGratis.and(comNomeSemelhante));
 	}
 	
 
