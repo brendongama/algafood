@@ -60,6 +60,7 @@ public class RestauranteController {
 		try {
 			Optional<Restaurante> restauranteBuscar = restauranteService.buscar(restauranteId);
 			if(restauranteBuscar.isPresent()) {
+				restaurante.setFormasPagamentos(restauranteBuscar.get().getFormasPagamentos());
 				restaurante = restauranteService.alterar(restauranteId, restaurante); 
 				return ResponseEntity.ok(restaurante);
 			}
