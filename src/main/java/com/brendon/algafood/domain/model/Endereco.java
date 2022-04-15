@@ -17,12 +17,12 @@ public class Endereco {
 	@Column(name = "endereco_logradouro")
 	private String logradouro;
 	
-	@Column(name = "endereco_nomero")
-	private String nomero;
+	@Column(name = "endereco_numero")
+	private String numero;
 	
 	@Column(name = "endereco_complemento")
 	private String complemento;
-	
+	 
 	@Column(name = "endereco_bairro")
 	private String bairro;	
 	

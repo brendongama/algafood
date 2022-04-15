@@ -61,6 +61,7 @@ public class RestauranteController {
 			Optional<Restaurante> restauranteBuscar = restauranteService.buscar(restauranteId);
 			if(restauranteBuscar.isPresent()) {
 				restaurante.setFormasPagamentos(restauranteBuscar.get().getFormasPagamentos());
+				restaurante.setEndereco(restauranteBuscar.get().getEndereco());
 				restaurante = restauranteService.alterar(restauranteId, restaurante); 
 				return ResponseEntity.ok(restaurante);
 			}
