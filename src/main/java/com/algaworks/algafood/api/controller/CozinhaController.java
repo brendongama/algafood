@@ -25,38 +25,37 @@ public class CozinhaController {
 
 	@Autowired
 	private CozinhaRepository cozinhaRepository;
-	
+
 	@Autowired
 	private CadastroCozinhaService cadastroCozinha;
-	
+
 	@GetMapping
 	public List<Cozinha> listar() {
 		return cozinhaRepository.findAll();
 	}
-	
+
 	@GetMapping("/{cozinhaId}")
-	public Cozinha buscar(@PathVariable Long cozinhaId) {		
-		return cadastroCozinha.buscarOuFalhar(cozinhaId);	
+	public Cozinha buscar(@PathVariable Long cozinhaId) {
+		return cadastroCozinha.buscarOuFalhar(cozinhaId);
 	}
-	
+
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public Cozinha adicionar(@RequestBody Cozinha cozinha) {
 		return cadastroCozinha.salvar(cozinha);
 	}
-	
+
 	@PutMapping("/{cozinhaId}")
-	public Cozinha atualizar(@PathVariable Long cozinhaId,
-			@RequestBody Cozinha cozinha) {
-		Cozinha cozinhaAtual = cadastroCozinha.buscarOuFalhar(cozinhaId);		
-		BeanUtils.copyProperties(cozinha, cozinhaAtual, "id");			
+	public Cozinha atualizar(@PathVariable Long cozinhaId, @RequestBody Cozinha cozinha) {
+		Cozinha cozinhaAtual = cadastroCozinha.buscarOuFalhar(cozinhaId);
+		BeanUtils.copyProperties(cozinha, cozinhaAtual, "id");
 		return cadastroCozinha.salvar(cozinhaAtual);
 	}
-	
+
 	@DeleteMapping("/{cozinhaId}")
 	@ResponseStatus(code = HttpStatus.NO_CONTENT)
-	public void remover(@PathVariable Long cozinhaId) {	
-			cadastroCozinha.excluir(cozinhaId);						
+	public void remover(@PathVariable Long cozinhaId) {
+		cadastroCozinha.excluir(cozinhaId);
 	}
-	
+
 }
