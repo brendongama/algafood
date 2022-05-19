@@ -7,7 +7,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
-import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
@@ -55,7 +54,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 			HttpHeaders headers, HttpStatus status, WebRequest request) {
 		
 		String path = ex.getPath().stream().map(ref -> ref.getFieldName()).collect(Collectors.joining("."));
-		String detail = String.format("A propriedade '%s' não existe ou não pode ser implementada no body da chamada da entidade '%s'", path, ex.getReferringClass().getSimpleName());
+		String detail = String.format("A propriedade '%s' não existe na entidade '%s'. Corrija ou remova essa propriedade e tente novamente", path, ex.getReferringClass().getSimpleName());
 		Problem problem = createProblemBuilder(status, ProblemType.MENSAGEM_INCOMPREENSIVEL, detail).build();
 		return handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);
 	}
