@@ -95,8 +95,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 	}
 	
 	@ExceptionHandler(Exception.class)
-	private ResponseEntity<Object> handleException(Exception ex, 
-			HttpHeaders headers, HttpStatus status, WebRequest request) {		
+	public ResponseEntity<Object> handleUncaught(Exception ex, WebRequest request) {		
 		HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;		
 	    ProblemType problemType = ProblemType.ERRO_DE_SISTEMA;
 	    String detail = "Ocorreu um erro interno inesperado no sistema. "
